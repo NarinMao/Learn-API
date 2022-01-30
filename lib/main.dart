@@ -1,3 +1,4 @@
+import 'package:api/screen/create_post_page.dart';
 import 'package:api/screen/home_view.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.cyan,
       ),
-      home: const HomeView(),
+      home: CreatePostPage(),
     );
   }
 }
