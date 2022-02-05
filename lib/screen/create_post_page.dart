@@ -2,6 +2,7 @@
 
 import 'package:api/controller/post_controller.dart';
 import 'package:api/models/post_model.dart';
+import 'package:api/widgets/loading_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -70,7 +71,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
                         id: 0,
                         title: _titleController.text,
                         body: _bodyController.text);
-                    _buildLoading(context, 'Loading');
+                    LoadingWidget.buildLoading(context, 'Loading');
                     await Future.delayed(Duration(seconds: 2));
                     _afterPost = await PostController().createPost(postModel);
                     setState(() {
@@ -115,21 +116,5 @@ class _CreatePostPageState extends State<CreatePostPage> {
         ),
       ),
     );
-  }
-
-  Future<void> _buildLoading(BuildContext context, String message) async {
-    return showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return const AlertDialog(
-            content: SizedBox(
-              height: 60,
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
-          );
-        });
   }
 }

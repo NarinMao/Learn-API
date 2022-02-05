@@ -1,5 +1,6 @@
-import 'package:api/controller/post_controller.dart';
-import 'package:api/models/post_model.dart';
+import 'package:api/screen/fect_data_with_bloc.dart';
+import 'package:api/screen/fetch_data_without_bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatefulWidget {
@@ -14,59 +15,43 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Page'),
+        title: const Text(
+          'HomePage',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
-      body: FutureBuilder<List<PostModel>>(
-          future: PostController().fetchData(),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return _buildError(snapshot);
-            } else {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return _loadingError(snapshot);
-              } else {
-                return ListView.separated(
-                  itemBuilder: (context, index) {
-                    var data = snapshot.data![index];
-                    return ListTile(
-                      leading: CircleAvatar(
-                        child: Text(data.userId.toString()),
-                      ),
-                      title: Text(
-                        data.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      subtitle: Text(
-                        data.body,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      trailing: Text(
-                        data.id.toString(),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return const Divider();
-                  },
-                  itemCount: snapshot.data!.length,
-                );
-              }
-            }
-          }),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CupertinoButton(
+              color: Colors.cyanAccent,
+              child: const Text('Fetch Data Without Bloc'),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const FectDataWithoutBloc()));
+              },
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            CupertinoButton(
+              color: Colors.cyanAccent,
+              child: const Text(
+                'Fetch Data With Bloc',
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const FectDataWithBlocl()));
+              },
+            )
+          ],
+        ),
+      ),
     );
   }
-}
-
-Center _buildError(AsyncSnapshot<Object?> snapshot) {
-  return Center(
-    child: Text('${snapshot.error}'),
-  );
-}
-
-Center _loadingError(AsyncSnapshot<Object?> snapshot) {
-  return Center(
-    child: Text('${snapshot.error}'),
-  );
 }
